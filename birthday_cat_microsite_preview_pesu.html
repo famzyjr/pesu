@@ -1,0 +1,421 @@
+<style>
+:root{
+  --cream:      #FBF3E9;
+  --paper:      #FFFBF4;
+  --blush:      #F5C9D0;
+  --blush-deep: #E9A3B0;
+  --coral:      #E8836F;
+  --sage:       #A7BE97;
+  --sage-deep:  #7E9A6C;
+  --gold:       #D9A857;
+  --choc:       #4A3226;
+  --choc-soft:  #7A5C4A;
+  --display: 'Fraunces', serif;
+  --body:    'Quicksand', sans-serif;
+  --mono:    'Space Mono', monospace;
+  --ease: cubic-bezier(.22,1,.36,1);
+}
+*{ box-sizing: border-box; }
+.bday-root{ margin:0; padding:0; background: var(--cream); color: var(--choc); font-family: var(--body); overflow-x:hidden; border-radius: 12px; }
+.bday-root button{ font-family: inherit; cursor:pointer; border:none; background:none; }
+.bday-root button:focus-visible, .bday-root .seal:focus-visible, .bday-root .cake:focus-visible{ outline: 3px solid var(--sage-deep); outline-offset: 4px; }
+@media (prefers-reduced-motion: reduce){ .bday-root *{ animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }
+.bday-root .scene{ display:none; min-height:520px; width:100%; align-items:center; justify-content:center; padding: 6vh 6vw; position:relative; }
+.bday-root .scene.active{ display:flex; animation: scene-in .7s var(--ease) both; }
+@keyframes scene-in{ from{ opacity:0; transform: translateY(14px); } to{ opacity:1; transform:none; } }
+.bday-root .eyebrow{ font-family: var(--mono); font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; color: var(--sage-deep); margin: 0 0 .6em; }
+.bday-root .hint{ font-family: var(--mono); font-size: .72rem; color: var(--choc-soft); opacity:.7; margin-top: 1.6em; letter-spacing:.04em; }
+.bday-root .section-title{ font-family: var(--display); font-weight: 600; font-size: clamp(1.6rem, 4vw, 2.4rem); margin: 0 0 1.4em; color: var(--choc); }
+.bday-root .next-btn{ margin-top: 2.6em; font-family: var(--mono); font-size: .78rem; letter-spacing:.05em; color: var(--choc); background: var(--paper); border: 1px solid rgba(74,50,38,.18); padding: .85em 1.4em; border-radius: 999px; transition: transform .25s var(--ease), background .25s var(--ease); }
+.bday-root .next-btn:hover{ background: var(--blush); transform: translateY(-2px); }
+.bday-root .envelope-wrap{ text-align:center; max-width: 480px; }
+.bday-root .to-name{ font-family: var(--display); font-style: italic; font-weight: 500; font-size: clamp(2.4rem, 8vw, 3.4rem); margin: 0 0 2em; color: var(--coral); }
+.bday-root .envelope{ position: relative; width: min(78vw, 300px); aspect-ratio: 3 / 2; margin: 0 auto; }
+.bday-root .env-back{ position:absolute; inset:0; background: var(--blush); border-radius: 8px; box-shadow: 0 22px 40px -18px rgba(74,50,38,.35); }
+.bday-root .env-letter-peek{ position:absolute; left: 8%; right: 8%; top: -6%; height: 55%; background: var(--paper); border-radius: 4px; box-shadow: 0 -2px 10px rgba(74,50,38,.08); transition: transform .7s var(--ease); transform-origin: bottom center; }
+.bday-root .env-flap{ position:absolute; inset:0; background: var(--blush-deep); clip-path: polygon(0 0, 50% 55%, 100% 0); border-radius: 8px 8px 0 0; transform-origin: top center; transition: transform .7s var(--ease); z-index:3; }
+.bday-root .seal{ position:absolute; left:50%; top:42%; transform: translate(-50%,-50%); width: 58px; height: 58px; background: var(--coral); border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow: 0 6px 14px rgba(200,90,70,.4); z-index: 4; transition: transform .35s var(--ease), opacity .5s var(--ease); }
+.bday-root .seal:hover{ transform: translate(-50%,-50%) scale(1.06); }
+.bday-root .seal .paw{ width: 30px; height:30px; fill: var(--cream); }
+.bday-root .envelope.opened .env-flap{ transform: rotateX(150deg); }
+.bday-root .envelope.opened .env-letter-peek{ transform: translateY(-46%) scale(1.03); }
+.bday-root .envelope.opened .seal{ opacity:0; transform: translate(-50%,-90%) scale(.6); pointer-events:none; }
+.bday-root .cake-wrap{ text-align:center; max-width: 480px; }
+.bday-root .big-name{ font-family: var(--display); font-weight: 600; font-size: clamp(2.2rem, 7vw, 3.2rem); margin: 0 0 .3em; color: var(--choc); }
+.bday-root .sub{ color: var(--choc-soft); margin: 0 0 2em; font-size: 1rem; }
+.bday-root .cake{ display:inline-block; padding:0; }
+.bday-root .cake-svg{ width: min(70vw, 240px); overflow: visible; }
+.bday-root .plate{ fill: var(--blush); }
+.bday-root .tier-bottom, .bday-root .tier-top{ fill: var(--paper); stroke: rgba(74,50,38,.12); stroke-width:1; }
+.bday-root .drizzle-bottom, .bday-root .drizzle-top{ fill: var(--coral); opacity:.85; }
+.bday-root .sprinkles rect{ fill: var(--sage); }
+.bday-root .sprinkles rect:nth-child(3n){ fill: var(--gold); }
+.bday-root .sprinkles rect:nth-child(3n+1){ fill: var(--coral); }
+.bday-root .candle{ fill: var(--gold); }
+.bday-root .flame-group{ transform-origin: 100px 22px; }
+.bday-root .flame{ fill: var(--coral); }
+.bday-root .flame-inner{ fill: var(--gold); }
+.bday-root .flame-group.lit{ animation: flicker 1.4s ease-in-out infinite; }
+@keyframes flicker{ 0%,100%{ transform: scale(1) rotate(0deg); } 30%{ transform: scale(1.05,.95) rotate(-3deg); } 60%{ transform: scale(.95,1.05) rotate(3deg); } }
+.bday-root .flame-group.out{ animation: puff .5s var(--ease) forwards; }
+@keyframes puff{ to{ opacity:0; transform: scale(.4) translateY(-14px); } }
+.bday-root .cake.blown .flame-group{ opacity:0; }
+.confetti-piece{ position:fixed; top:40%; left:50%; width:8px; height:8px; pointer-events:none; z-index: 999999; border-radius:2px; }
+.bday-root .gallery-wrap{ text-align:center; max-width: 560px; width:100%; }
+.bday-root .polaroid-track{ display:flex; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 1.2em .5em 1.6em; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+.bday-root .polaroid-track::-webkit-scrollbar{ display:none; }
+.bday-root .polaroid{ flex: 0 0 auto; scroll-snap-align: center; width: min(72vw, 230px); background: var(--paper); padding: 14px 14px 22px; border-radius: 3px; box-shadow: 0 14px 26px -14px rgba(74,50,38,.3); transform: rotate(var(--tilt, -3deg)); transition: transform .3s var(--ease); }
+.bday-root .polaroid:hover{ transform: rotate(0deg) translateY(-4px); }
+.bday-root .polaroid-frame{ width:100%; aspect-ratio: 1/1; background: var(--blush); border-radius: 2px; display:flex; align-items:center; justify-content:center; overflow:hidden; margin-bottom: 12px; }
+.bday-root .polaroid-frame svg{ width: 80%; height:80%; }
+.bday-root .polaroid-caption{ font-family: var(--display); font-style: italic; font-size: .95rem; color: var(--choc); margin:0; line-height:1.35; }
+.bday-root .dots{ display:flex; gap:7px; justify-content:center; margin-top:.4em; }
+.bday-root .dot{ width:6px; height:6px; border-radius:50%; background: rgba(74,50,38,.2); transition: background .25s; }
+.bday-root .dot.active{ background: var(--coral); }
+.bday-root .wishes-wrap{ text-align:center; max-width: 640px; }
+.bday-root .wish-cards{ display:flex; flex-wrap:wrap; gap: 18px; justify-content:center; }
+.bday-root .wish-card{ width: 170px; height: 220px; perspective: 1000px; }
+.bday-root .wish-card-inner{ position:relative; width:100%; height:100%; transition: transform .6s var(--ease); transform-style: preserve-3d; }
+.bday-root .wish-card.flipped .wish-card-inner{ transform: rotateY(180deg); }
+.bday-root .wish-face{ position:absolute; inset:0; border-radius: 14px; display:flex; align-items:center; justify-content:center; padding: 1.2em; backface-visibility: hidden; box-shadow: 0 12px 24px -14px rgba(74,50,38,.3); }
+.bday-root .wish-front{ background: var(--blush); flex-direction:column; gap:.5em; }
+.bday-root .wish-front .wish-icon{ width:34px; height:34px; fill: var(--coral); }
+.bday-root .wish-front span{ font-family: var(--mono); font-size:.7rem; letter-spacing:.06em; color: var(--choc-soft); }
+.bday-root .wish-back{ background: var(--paper); transform: rotateY(180deg); font-family: var(--display); font-size: 1rem; line-height:1.4; color: var(--choc); }
+.bday-root .letter-wrap{ text-align:center; max-width: 560px; width:100%; }
+.bday-root .letter-paper{ background: var(--paper); border-radius: 4px; padding: 2.6em 2.4em; text-align:left; box-shadow: 0 26px 50px -22px rgba(74,50,38,.4); position:relative; }
+.bday-root .letter-paper::before{ content:''; position:absolute; inset: 10px; border: 1px dashed rgba(74,50,38,.12); border-radius: 3px; pointer-events:none; }
+.bday-root .letter-date{ font-family: var(--mono); font-size: .72rem; color: var(--choc-soft); margin: 0 0 1.4em; }
+.bday-root .letter-greeting{ font-family: var(--display); font-style: italic; font-size: 1.5rem; margin: 0 0 .8em; color: var(--coral); }
+.bday-root .letter-body p{ font-size: 1.02rem; line-height: 1.75; color: var(--choc); margin: 0 0 1em; }
+.bday-root .letter-sign{ font-family: var(--display); font-style: italic; font-size: 1.1rem; margin: 1.4em 0 0; text-align:right; color: var(--coral); }
+.bday-root .restart-btn{ margin-top: 2em; font-family: var(--mono); font-size: .72rem; color: var(--choc-soft); opacity:.75; letter-spacing:.04em; }
+.bday-root .restart-btn:hover{ opacity:1; color: var(--coral); }
+@media (max-width: 420px){ .bday-root .letter-paper{ padding: 2em 1.4em; } .bday-root .wish-card{ width: 42vw; height: 190px; } }
+</style>
+
+<div class="bday-root">
+
+<section id="scene-envelope" class="scene active">
+  <div class="envelope-wrap">
+    <p class="eyebrow">a little something for</p>
+    <h1 class="to-name" id="toNameEnvelope">Pesu</h1>
+    <div class="envelope" id="envelope">
+      <div class="env-back"></div>
+      <div class="env-letter-peek"></div>
+      <div class="env-flap"></div>
+      <button class="seal" id="sealBtn" aria-label="Open envelope">
+        <svg viewBox="0 0 60 60" class="paw">
+          <circle cx="30" cy="38" r="13"/>
+          <circle cx="14" cy="20" r="7.5"/>
+          <circle cx="30" cy="13" r="8"/>
+          <circle cx="46" cy="20" r="7.5"/>
+        </svg>
+      </button>
+    </div>
+    <p class="hint">tap the paw seal to open</p>
+  </div>
+</section>
+
+<section id="scene-cake" class="scene">
+  <div class="cake-wrap">
+    <p class="eyebrow" id="greetEyebrow">happy birthday</p>
+    <h1 class="big-name" id="toNameCake">Pesu</h1>
+    <p class="sub" id="cakeSub">make a wish and blow out the candle</p>
+    <button class="cake" id="cakeBtn" aria-label="Blow out candle">
+      <svg viewBox="0 0 200 170" class="cake-svg">
+        <ellipse cx="100" cy="150" rx="86" ry="12" class="plate"/>
+        <rect x="30" y="100" width="140" height="46" rx="10" class="tier tier-bottom"/>
+        <rect x="30" y="100" width="140" height="14" rx="7" class="drizzle drizzle-bottom"/>
+        <rect x="55" y="66" width="90" height="40" rx="9" class="tier tier-top"/>
+        <rect x="55" y="66" width="90" height="12" rx="6" class="drizzle drizzle-top"/>
+        <g class="sprinkles">
+          <rect x="45" y="118" width="6" height="3" rx="1.5"/>
+          <rect x="70" y="128" width="6" height="3" rx="1.5" transform="rotate(30 73 129)"/>
+          <rect x="100" y="120" width="6" height="3" rx="1.5" transform="rotate(-20 103 121)"/>
+          <rect x="130" y="130" width="6" height="3" rx="1.5"/>
+          <rect x="150" y="118" width="6" height="3" rx="1.5" transform="rotate(45 153 119)"/>
+          <rect x="75" y="82" width="6" height="3" rx="1.5"/>
+          <rect x="105" y="88" width="6" height="3" rx="1.5" transform="rotate(20 108 89)"/>
+          <rect x="125" y="80" width="6" height="3" rx="1.5"/>
+        </g>
+        <rect x="96" y="34" width="8" height="32" rx="3" class="candle"/>
+        <g id="flame" class="flame-group">
+          <path d="M100 8 C 94 16, 94 24, 100 30 C 106 24, 106 16, 100 8 Z" class="flame"/>
+          <path d="M100 14 C 97 19, 97 24, 100 27 C 103 24, 103 19, 100 14 Z" class="flame-inner"/>
+        </g>
+      </svg>
+    </button>
+    <p class="hint" id="cakeHint">tap the candle</p>
+  </div>
+</section>
+
+<section id="scene-gallery" class="scene">
+  <div class="gallery-wrap">
+    <p class="eyebrow">exhibit a: reasons you're loved</p>
+    <h2 class="section-title">a very official cat gallery</h2>
+    <div class="polaroid-track" id="polaroidTrack"></div>
+    <div class="dots" id="galleryDots"></div>
+    <button class="next-btn" id="galleryNext">on to your wishes →</button>
+  </div>
+</section>
+
+<section id="scene-wishes" class="scene">
+  <div class="wishes-wrap">
+    <p class="eyebrow">pick one, or all three</p>
+    <h2 class="section-title">a small bouquet of wishes</h2>
+    <div class="wish-cards" id="wishCards"></div>
+    <button class="next-btn" id="wishesNext">okay, one more thing →</button>
+  </div>
+</section>
+
+<section id="scene-letter" class="scene">
+  <div class="letter-wrap">
+    <div class="letter-paper" id="letterPaper">
+      <p class="letter-date" id="letterDate"></p>
+      <p class="letter-greeting" id="letterGreeting">Dear Pesu,</p>
+      <div class="letter-body" id="letterBody"></div>
+      <p class="letter-sign" id="letterSign">— with love, always</p>
+    </div>
+    <button class="restart-btn" id="restartBtn">open it again ↺</button>
+  </div>
+</section>
+
+</div>
+
+<script>
+const CONFIG = {
+  toName: "Pesu",
+  cakeSubtext: "make a wish and blow out the candle",
+  cats: [
+    { pose: "normal",   caption: "reporting for emotional support duty" },
+    { pose: "sleepy",   caption: "this is me, 90% of the time" },
+    { pose: "heart",    caption: "how I look at you, basically" },
+    { pose: "surprised", caption: "me finding out it's your birthday" },
+    { pose: "wink",     caption: "no further questions, your honor" },
+  ],
+  wishes: [
+    "May your year be full of soft mornings and easy laughs.",
+    "May the people who matter keep showing up for you.",
+    "May you get exactly the kind of birthday you didn't have to ask for.",
+  ],
+  letter: {
+    date: "July 26",
+    greeting: "Dear Pesu,",
+    paragraphs: [
+      "I hope today feels lighter than most, the kind of day where good things just seem to find you.",
+      "Thank you for being exactly who you are, not the version of you that's easier to explain, just you, as you actually are.",
+      "Here's to another year of it. I'm glad I get a front-row seat.",
+    ],
+    signoff: "— with love, always",
+  },
+  confettiColors: ["#E8836F", "#F5C9D0", "#D9A857", "#A7BE97"],
+};
+
+const CAT_POSES = {
+  normal: `
+    <path d="M30 20 L18 4 L26 22 Z" fill="#4A3226"/>
+    <path d="M70 20 L82 4 L74 22 Z" fill="#4A3226"/>
+    <circle cx="50" cy="52" r="34" fill="#4A3226"/>
+    <ellipse cx="38" cy="48" rx="4.5" ry="6" fill="#FFFBF4"/>
+    <ellipse cx="62" cy="48" rx="4.5" ry="6" fill="#FFFBF4"/>
+    <path d="M50 58 L46 64 L54 64 Z" fill="#E8836F"/>
+    <path d="M50 64 Q50 70 44 70" stroke="#FFFBF4" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M50 64 Q50 70 56 70" stroke="#FFFBF4" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <g stroke="#FFFBF4" stroke-width="1.6" stroke-linecap="round">
+      <path d="M10 50 L28 53"/><path d="M10 58 L28 57"/>
+      <path d="M90 50 L72 53"/><path d="M90 58 L72 57"/>
+    </g>`,
+  sleepy: `
+    <path d="M30 20 L18 4 L26 22 Z" fill="#4A3226"/>
+    <path d="M70 20 L82 4 L74 22 Z" fill="#4A3226"/>
+    <circle cx="50" cy="52" r="34" fill="#4A3226"/>
+    <path d="M33 48 Q38 44 43 48" stroke="#FFFBF4" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    <path d="M57 48 Q62 44 67 48" stroke="#FFFBF4" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    <path d="M50 58 L46 64 L54 64 Z" fill="#E8836F"/>
+    <path d="M50 64 Q50 68 46 69" stroke="#FFFBF4" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <text x="66" y="30" font-size="13" fill="#A7BE97">z</text>
+    <text x="76" y="20" font-size="10" fill="#A7BE97">z</text>
+    <g stroke="#FFFBF4" stroke-width="1.6" stroke-linecap="round">
+      <path d="M10 50 L28 53"/><path d="M10 58 L28 57"/>
+      <path d="M90 50 L72 53"/><path d="M90 58 L72 57"/>
+    </g>`,
+  heart: `
+    <path d="M30 20 L18 4 L26 22 Z" fill="#4A3226"/>
+    <path d="M70 20 L82 4 L74 22 Z" fill="#4A3226"/>
+    <circle cx="50" cy="52" r="34" fill="#4A3226"/>
+    <path d="M38 45 c-3-4-9-4-9 1 c0 4 5 7 9 10 c4-3 9-6 9-10 c0-5-6-5-9-1z" fill="#E8836F"/>
+    <path d="M62 45 c-3-4-9-4-9 1 c0 4 5 7 9 10 c4-3 9-6 9-10 c0-5-6-5-9-1z" fill="#E8836F"/>
+    <path d="M50 58 L46 64 L54 64 Z" fill="#E8836F"/>
+    <path d="M50 64 Q50 70 44 70" stroke="#FFFBF4" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M50 64 Q50 70 56 70" stroke="#FFFBF4" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <g stroke="#FFFBF4" stroke-width="1.6" stroke-linecap="round">
+      <path d="M10 50 L28 53"/><path d="M10 58 L28 57"/>
+      <path d="M90 50 L72 53"/><path d="M90 58 L72 57"/>
+    </g>`,
+  surprised: `
+    <path d="M30 20 L18 2 L27 22 Z" fill="#4A3226"/>
+    <path d="M70 20 L82 2 L73 22 Z" fill="#4A3226"/>
+    <circle cx="50" cy="53" r="34" fill="#4A3226"/>
+    <circle cx="38" cy="48" r="5.5" fill="#FFFBF4"/>
+    <circle cx="62" cy="48" r="5.5" fill="#FFFBF4"/>
+    <circle cx="38" cy="48" r="2.4" fill="#4A3226"/>
+    <circle cx="62" cy="48" r="2.4" fill="#4A3226"/>
+    <ellipse cx="50" cy="64" rx="5" ry="6" fill="#E8836F"/>
+    <g stroke="#FFFBF4" stroke-width="1.6" stroke-linecap="round">
+      <path d="M10 50 L28 53"/><path d="M10 58 L28 57"/>
+      <path d="M90 50 L72 53"/><path d="M90 58 L72 57"/>
+    </g>`,
+  wink: `
+    <path d="M30 20 L18 4 L26 22 Z" fill="#4A3226"/>
+    <path d="M70 20 L82 4 L74 22 Z" fill="#4A3226"/>
+    <circle cx="50" cy="52" r="34" fill="#4A3226"/>
+    <ellipse cx="38" cy="48" rx="4.5" ry="6" fill="#FFFBF4"/>
+    <path d="M57 48 Q62 44 67 48" stroke="#FFFBF4" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    <path d="M50 58 L46 64 L54 64 Z" fill="#E8836F"/>
+    <path d="M50 64 Q50 70 44 70" stroke="#FFFBF4" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M50 64 Q50 70 56 70" stroke="#FFFBF4" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <g stroke="#FFFBF4" stroke-width="1.6" stroke-linecap="round">
+      <path d="M10 50 L28 53"/><path d="M10 58 L28 57"/>
+      <path d="M90 50 L72 53"/><path d="M90 58 L72 57"/>
+    </g>`,
+};
+
+const WISH_ICON = `<svg viewBox="0 0 24 24" class="wish-icon"><path d="M12 21s-7-4.35-9.5-8.5C.7 9 2.4 5.5 6 5.5c2 0 3.5 1.2 4.5 2.7C11.5 6.7 13 5.5 15 5.5c3.6 0 5.3 3.5 3.5 7C16 16.65 12 21 12 21z"/></svg>`;
+
+const SCENES = ["scene-envelope", "scene-cake", "scene-gallery", "scene-wishes", "scene-letter"];
+let currentScene = 0;
+
+function goToScene(index){
+  document.getElementById(SCENES[currentScene]).classList.remove("active");
+  currentScene = index;
+  document.getElementById(SCENES[currentScene]).classList.add("active");
+}
+function nextScene(){ if (currentScene < SCENES.length - 1) goToScene(currentScene + 1); }
+
+function initWidget(){
+  document.getElementById("toNameEnvelope").textContent = CONFIG.toName;
+  document.getElementById("toNameCake").textContent = CONFIG.toName;
+  document.getElementById("cakeSub").textContent = CONFIG.cakeSubtext;
+  document.getElementById("letterGreeting").textContent = CONFIG.letter.greeting;
+  document.getElementById("letterSign").textContent = CONFIG.letter.signoff;
+  document.getElementById("letterDate").textContent = CONFIG.letter.date;
+
+  const letterBody = document.getElementById("letterBody");
+  letterBody.innerHTML = CONFIG.letter.paragraphs.map(p => `<p>${p}</p>`).join("");
+
+  const track = document.getElementById("polaroidTrack");
+  const dotsWrap = document.getElementById("galleryDots");
+  CONFIG.cats.forEach((cat, i) => {
+    const tilt = (i % 2 === 0 ? -1 : 1) * (2 + Math.random() * 3);
+    const card = document.createElement("div");
+    card.className = "polaroid";
+    card.style.setProperty("--tilt", `${tilt}deg`);
+    card.innerHTML = `
+      <div class="polaroid-frame">
+        <svg viewBox="0 0 100 90">${CAT_POSES[cat.pose] || CAT_POSES.normal}</svg>
+      </div>
+      <p class="polaroid-caption">${cat.caption}</p>`;
+    track.appendChild(card);
+
+    const dot = document.createElement("span");
+    dot.className = "dot" + (i === 0 ? " active" : "");
+    dotsWrap.appendChild(dot);
+  });
+
+  track.addEventListener("scroll", () => {
+    const cardWidth = track.firstElementChild.getBoundingClientRect().width + 20;
+    const active = Math.round(track.scrollLeft / cardWidth);
+    [...dotsWrap.children].forEach((d, i) => d.classList.toggle("active", i === active));
+  });
+
+  const wishWrap = document.getElementById("wishCards");
+  CONFIG.wishes.forEach(text => {
+    const card = document.createElement("div");
+    card.className = "wish-card";
+    card.innerHTML = `
+      <div class="wish-card-inner">
+        <div class="wish-face wish-front">
+          ${WISH_ICON}
+          <span>tap to open</span>
+        </div>
+        <div class="wish-face wish-back">${text}</div>
+      </div>`;
+    card.addEventListener("click", () => card.classList.toggle("flipped"));
+    wishWrap.appendChild(card);
+  });
+}
+
+function setupEnvelope(){
+  const envelope = document.getElementById("envelope");
+  const sealBtn = document.getElementById("sealBtn");
+  sealBtn.addEventListener("click", () => {
+    envelope.classList.add("opened");
+    setTimeout(nextScene, 900);
+  });
+}
+
+function setupCake(){
+  const cakeBtn = document.getElementById("cakeBtn");
+  const flame = document.getElementById("flame");
+  const hint = document.getElementById("cakeHint");
+  flame.classList.add("lit");
+  let blown = false;
+  cakeBtn.addEventListener("click", () => {
+    if (blown) return;
+    blown = true;
+    flame.classList.remove("lit");
+    flame.classList.add("out");
+    cakeBtn.classList.add("blown");
+    hint.textContent = "wish made";
+    burstConfetti(cakeBtn.getBoundingClientRect());
+    setTimeout(nextScene, 1400);
+  });
+}
+
+function burstConfetti(originRect){
+  const originX = originRect.left + originRect.width / 2;
+  const originY = originRect.top + originRect.height / 2;
+  const count = 26;
+  for (let i = 0; i < count; i++){
+    const piece = document.createElement("div");
+    piece.className = "confetti-piece";
+    piece.style.background = CONFIG.confettiColors[i % CONFIG.confettiColors.length];
+    piece.style.left = `${originX}px`;
+    piece.style.top = `${originY}px`;
+    document.body.appendChild(piece);
+    const angle = Math.random() * Math.PI * 2;
+    const distance = 80 + Math.random() * 160;
+    const dx = Math.cos(angle) * distance;
+    const dy = Math.sin(angle) * distance - 60;
+    const rotate = Math.random() * 720 - 360;
+    piece.animate(
+      [
+        { transform: "translate(0,0) rotate(0deg)", opacity: 1 },
+        { transform: `translate(${dx}px, ${dy + 220}px) rotate(${rotate}deg)`, opacity: 0 }
+      ],
+      { duration: 1100 + Math.random() * 500, easing: "cubic-bezier(.22,1,.36,1)", fill: "forwards" }
+    );
+    setTimeout(() => piece.remove(), 1700);
+  }
+}
+
+function setupNav(){
+  document.getElementById("galleryNext").addEventListener("click", nextScene);
+  document.getElementById("wishesNext").addEventListener("click", nextScene);
+  document.getElementById("restartBtn").addEventListener("click", () => {
+    document.getElementById("envelope").classList.remove("opened");
+    const flame = document.getElementById("flame");
+    flame.classList.remove("out");
+    flame.classList.add("lit");
+    document.getElementById("cakeBtn").classList.remove("blown");
+    document.getElementById("cakeHint").textContent = "tap the candle";
+    goToScene(0);
+  });
+}
+
+initWidget();
+setupEnvelope();
+setupCake();
+setupNav();
+</script>
